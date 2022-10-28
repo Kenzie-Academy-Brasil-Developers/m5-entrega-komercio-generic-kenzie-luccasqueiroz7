@@ -42,4 +42,3 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             "seller",
             "is_active",
         ]
-        depth = 1

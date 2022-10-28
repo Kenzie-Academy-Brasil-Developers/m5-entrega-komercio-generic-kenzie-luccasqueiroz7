@@ -7,7 +7,6 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "id",
             "username",
             "password",
             "first_name",
@@ -18,7 +17,6 @@ class AccountSerializer(serializers.ModelSerializer):
             "is_superuser",
         ]
         read_only_fields = [
-            "id",
             "date_joined",
             "is_active",
             "is_superuser",
@@ -26,14 +24,7 @@ class AccountSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        user = User(
-            username=validated_data["username"],
-            first_name=validated_data["first_name"],
-            last_name=validated_data["last_name"],
-            is_seller=validated_data["is_seller"],
-        )
-        user.set_password(validated_data["password"])
-        user.save()
+        user = User.objects.create_user(**validated_data)
         return user
 
 

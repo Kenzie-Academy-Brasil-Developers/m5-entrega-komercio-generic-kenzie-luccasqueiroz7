@@ -164,12 +164,9 @@ class UsersViewsTest(APITestCase):
         user = User.objects.create_superuser(**self.account_admin)
         token = Token.objects.create(user=user)
 
-        create = self.client.post(
-            "/api/accounts/",
-            self.account_seller,
-            format="json",
-        )
-        id = create.data["id"]
+        create = User.objects.create_user(**self.account_seller)
+
+        id = create.id
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         response = self.client.patch(
@@ -185,12 +182,8 @@ class UsersViewsTest(APITestCase):
         user = User.objects.create_user(**self.account_seller)
         token = Token.objects.create(user=user)
 
-        create = self.client.post(
-            "/api/accounts/",
-            self.account_not_seller,
-            format="json",
-        )
-        id = create.data["id"]
+        create = User.objects.create_user(**self.account_not_seller)
+        id = create.id
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         response = self.client.patch(
@@ -200,7 +193,7 @@ class UsersViewsTest(APITestCase):
         )
 
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(create.data["is_active"], True)
+        self.assertEqual(create.is_active, True)
         self.assertEqual(
             response.data["detail"],
             "You do not have permission to perform this action.",
@@ -210,12 +203,8 @@ class UsersViewsTest(APITestCase):
         user = User.objects.create_superuser(**self.account_admin)
         token = Token.objects.create(user=user)
 
-        create = self.client.post(
-            "/api/accounts/",
-            self.account_seller,
-            format="json",
-        )
-        id = create.data["id"]
+        create = User.objects.create_user(**self.account_seller)
+        id = create.id
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         deactivate = self.client.patch(

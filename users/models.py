@@ -9,10 +9,12 @@ class User(AbstractUser):
         primary_key=True,
         editable=False,
     )
-    first_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     is_seller = models.BooleanField(
         null=True,
         blank=True,
         default=False,
     )
+
+    REQUIRED_FIELDS = ["first_name", "last_name"]
